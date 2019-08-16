@@ -1,0 +1,40 @@
+{
+    "name": "projapps/psa",
+    "description": "Projapps SQLite Administrator",
+    "homepage": "https://github.com/nghianja/psa",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "James Hian Ng",
+            "email": "james.ng@projapps.com",
+            "homepage": "http://blog.projapps.com/?page_id=5"
+        }
+    ],
+    "require": {
+        "ext-json": "*",
+        "ext-pdo": "*",
+        "monolog/monolog": "^1.24",
+        "php": ">=7.1",
+        "php-di/php-di": "^6.0",
+        "slim/slim": "4.0.0",
+        "slim/php-view": "^2.2.0",
+        "slim/psr7": "^0.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "start": "php -S localhost:8080 -t public",
+        "test": "phpunit"
+    }
+}
