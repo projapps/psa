@@ -4,3 +4,4 @@
 /logs/*
 !/logs/README.md
 /var/cache/*
+/composer.phar

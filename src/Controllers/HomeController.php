@@ -16,10 +16,12 @@ class HomeController
     }
 
     public function home(Request $request, Response $response, $args) {
+        $args['menu'] = $request->getAttribute('menu');
         return $this->container->get(PhpRenderer::class)->render($response, 'index.phtml', $args);
     }
 
     public function about(Request $request, Response $response, $args) {
+        $args['menu'] = $request->getAttribute('menu');
         return $this->container->get(PhpRenderer::class)->render($response, 'about.phtml', $args);
     }
 }
