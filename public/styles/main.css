@@ -19,6 +19,7 @@ a:active {
     cursor: pointer;
     color: black;
 }
+table.dataTable tbody td { text-align: center; }
 #acronym { font-size: 64pt; }
 #menu { float: right; }
 #formLogin {
@@ -41,6 +42,4 @@ a:active {
 #main { overflow: auto; }
 #example_wrapper .fg-toolbar { font-size: 0.8em }
 #theme_links span { float: left; padding: 2px 10px; }
-.dataTables_info { padding-top: 0; }
-.dataTables_paginate { padding-top: 0; }
 .css_right { float: right; }

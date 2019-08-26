@@ -1,1 +1,35 @@
-<form></form>
+<div id="sidebar">
+    <form>
+        <fieldset>
+            <legend>Database</legend>
+            <p>Version <?=$version?></p>
+        </fieldset>
+        <br>
+        <fieldset>
+            <legend>Tables</legend>
+            <p>
+                <?php
+                foreach ($tables as $table) {
+                    echo $table;
+                    echo '<br>';
+                }
+                ?>
+            </p>
+        </fieldset>
+        <br>
+        <?php
+        if ($username == 'admin') {
+            echo '<fieldset>';
+            echo '<legend>Admin</legend>';
+            echo '<p>';
+            foreach ($tables as $table) {
+                echo '<a href="edit_admin/' . $table . '">' . $table . '</a>';
+                echo '<br>';
+            }
+            echo '<a href="add_admin">add_new_table</a>';
+            echo '</p>';
+            echo '</fieldset>';
+        }
+        ?>
+    </form>
+</div>

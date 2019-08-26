@@ -1,1 +1,50 @@
-<script src="scripts/main.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="scripts/main.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var username = "<?=$username?>";
+        var oTable = $('#example').DataTable({
+            "bFilter": false,
+            "bSort": false,
+            "bJQueryUI": false,
+            "bProcessing": true,
+            "bServerSide": true,
+            "sPaginationType": "full_numbers",
+            "sAjaxSource": "<?=$menu['list_data']?>",
+            "fnServerData": function (sSource, aoData, fnCallback){
+                $.ajax({
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": sSource,
+                    "data": aoData,
+                    "success": fnCallback
+                });
+            },
+            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull){
+                nRow.id = aData[0];
+                return nRow;
+            }
+        });
+        /*
+        oTable.makeEditable({
+            sUpdateURL: "<!-- ?php echo 'edit_data/' . $tablename ? -->",
+            sAddURL: "<!-- ?php echo 'add_data/' . $tablename ? -->",
+            sDeleteURL: "<!-- ?php echo 'remove_data/' . $tablename ? -->",
+            sAddDeleteToolbarSelector: ".dataTables_length"
+        });
+        */
+        if (username === ''){
+            $('#login').click(function(){
+                $('#formLogin').toggle();
+                $('#error').toggle();
+            });
+        }
+        else{
+            $('#login').attr('href', 'logout_user');
+            $('#login').text('Logout <?=$username?>');
+        }
+
+        $('#formLogin').hide();
+    });
+</script>

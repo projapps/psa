@@ -38,14 +38,14 @@ Please refer to this [blog post](http://blog.projapps.com/?p=79) for updated inf
 ## Framework/Libraries used
 
 * [Slim Framework](https://www.slimframework.com/)
-* [IgnitedDatatables](https://github.com/IgnitedDatatables/Ignited-Datatables/wiki)
-* [DataTables](http://datatables.net/) and its [Editable Plugin](http://code.google.com/p/jquery-datatables-editable/)
+* [DataTables](https://datatables.net/) and its [Editor](https://editor.datatables.net/)
 * PDO SQLite3 Driver
 * [jQuery](http://jquery.com/) and [jQuery User Interface](http://jqueryui.com/)
 
 ## Functionality
 
-Version 1.1 supports the adding, updating and deleting of table data as well as the creating and dropping of tables. Only adding of column is allowed for altering table schema. What table is displayed for use depends on which user is logged in.
+####Version 1.1
+Supports the adding, updating and deleting of table data as well as the creating and dropping of tables. Only adding of column is allowed for altering table schema. What table is displayed for use depends on which user is logged in.
 
 ## Usage
 

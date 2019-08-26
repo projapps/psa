@@ -8,6 +8,39 @@
 <?php include __DIR__ . '/boilerplate_menu.phtml'; ?>
 <div id="spacing">Projapps SQLite Administrator</div>
 <?php include __DIR__ . '/boilerplate_side.phtml'; ?>
+<div id="main">
+    <!-- form method="post" action="list_data/<?=$tablename?>" id="formAddNewRow" title="Add New Row">
+        <?php
+        $counter = 0;
+        foreach ($fields as $field) {
+            if ($field['name'] == 'id') {
+                echo '<input type="hidden" name="' . $field['name'] . '" value="DATAROWID" rel="' . $counter . '" />';
+            } else {
+                echo '<label for="' . $field['name'] . '">' . $field['name'] . '</label>';
+                echo '<br>';
+                echo '<input type="text" name="' . $field['name'] . '" id="' . $field['name'] . '" class="required" rel="' . $counter . '" />';
+                echo '<br>';
+            }
+            $counter++;
+        }
+        ?>
+    </form -->
+    <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+        <thead>
+        <tr>
+            <?php
+            $counter = 0;
+            foreach ($fields as $field) {
+                echo '<th>' . $field['name'] . '</th>';
+                $counter++;
+            }
+            ?>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
 <?php include __DIR__ . '/boilerplate_body.phtml'; ?>
 </body>
 </html>

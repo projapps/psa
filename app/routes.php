@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\DataController;
 use App\Controllers\HomeController;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
@@ -14,9 +15,12 @@ return function (App $app) {
         $routeParser = $app->getRouteCollector()->getRouteParser();
         $menu = [
             'home' => $routeParser->urlFor('home'),
-            'about' => $routeParser->urlFor('about')
-        ];
+            'about' => $routeParser->urlFor('about')        ];
         $request = $request->withAttribute('menu', $menu);
         return $handler->handle($request);
+    });
+
+    $app->group('/data', function (Group $group) {
+        $group->post('/list/{table}', DataController::class . ':list')->setName('list_data');
     });
 };
