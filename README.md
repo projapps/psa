@@ -44,7 +44,7 @@ Please refer to this [blog post](http://blog.projapps.com/?p=79) for updated inf
 
 ## Functionality
 
-####Version 1.1
+#### Version 1.1
 Supports the adding, updating and deleting of table data as well as the creating and dropping of tables. Only adding of column is allowed for altering table schema. What table is displayed for use depends on which user is logged in.
 
 ## Usage
