@@ -19,7 +19,6 @@ a:active {
     cursor: pointer;
     color: black;
 }
-table.dataTable tbody td { text-align: center; }
 #acronym { font-size: 64pt; }
 #menu { float: right; }
 #spacing { margin-bottom: 30px; }
