@@ -1,18 +1,49 @@
-<div id="menu">
-    <a href="<?=$menu['home']?>">Home</a> |
-    <a href="<?=$menu['about']?>">About</a> |
-    <a href="https://github.com/nghianja/psa">GitHub</a> |
-    <a id="login">Login</a>
-    <form id="formLogin" class="forms">
-        <label for="username"></label>
-        <input type="text" name="username" id="username">
-        <br>
-        <label for="password"></label>
-        <input type="password" name="password" id="password">
-        <br>
-        <input type="submit" name="mysubmit" value="Login">
-        <input type="reset" name="myreset" value="Cancel">
-    </form>
-    <ul id="error">
-    </ul>
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+    <span class="navbar-brand mb-0 h1">Projapps<br>SQLite<br>Administrator</span>
+    <button class="navbar-toggler" type="button"
+            data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item <?=$nav['home']?>"><a class="nav-link" href="<?=$menu['home']?>">Home</a></li>
+            <li class="nav-item active"><span class="nav-link">|</span></li>
+            <li class="nav-item <?=$nav['about']?>"><a class="nav-link" href="<?=$menu['about']?>">About</a></li>
+            <li class="nav-item active"><span class="nav-link">|</span></li>
+            <li class="nav-item"><a class="nav-link" href="https://github.com/nghianja/psa">GitHub</a></li>
+            <li class="nav-item active"><span class="nav-link">|</span></li>
+            <li class="nav-item"><a class="nav-link" id="login">Login</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="modal fade" id="modalLogin" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="formLogin" method="post">
+            <div class="modal-header">
+                <h5 class="modal-title">Login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group">
+                        <label for="username"></label>
+                        <input type="text" class="form-control" name="username"
+                               id="username" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password"></label>
+                        <input type="password" class="form-control" name="password"
+                               id="password" placeholder="Password" required>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="buttonLogin">Sign In</button>
+            </div>
+            </form>
+        </div>
+    </div>
 </div>

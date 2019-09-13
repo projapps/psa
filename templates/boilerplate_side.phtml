@@ -1,12 +1,12 @@
-<div id="sidebar">
+<div class="col-sm-2">
     <form>
-        <fieldset>
-            <legend>Database</legend>
+        <fieldset class="border p-2">
+            <legend class="w-auto">Database</legend>
             <p>Version <?=$version?></p>
         </fieldset>
         <br>
-        <fieldset>
-            <legend>Tables</legend>
+        <fieldset class="border p-2">
+            <legend class="w-auto">Tables</legend>
             <p>
                 <?php
                 foreach ($tables as $table) {
@@ -19,8 +19,8 @@
         <br>
         <?php
         if ($username == 'admin') {
-            echo '<fieldset>';
-            echo '<legend>Admin</legend>';
+            echo '<fieldset class="border p-2">';
+            echo '<legend class="w-auto">Admin</legend>';
             echo '<p>';
             foreach ($tables as $table) {
                 echo '<a href="edit_admin/' . $table . '">' . $table . '</a>';

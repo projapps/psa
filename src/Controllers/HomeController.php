@@ -20,11 +20,15 @@ class HomeController
 
     public function home(Request $request, Response $response, $args) {
         $args = $this->setArgs($request, $args);
+        $args['nav']['home'] = 'active';
+        $args['nav']['about'] = '';
         return $this->container->get(PhpRenderer::class)->render($response, 'index.phtml', $args);
     }
 
     public function about(Request $request, Response $response, $args) {
         $args = $this->setArgs($request, $args);
+        $args['nav']['home'] = '';
+        $args['nav']['about'] = 'active';
         return $this->container->get(PhpRenderer::class)->render($response, 'about.phtml', $args);
     }
 

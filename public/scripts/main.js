@@ -1,13 +1,11 @@
 $(document).ready(function() {
-    if (username === ''){
-        $('#login').click(function(){
-            $('#formLogin').toggle();
-            $('#error').toggle();
+    if (username === '') {
+        $('#login').click(function() {
+            $('#modalLogin').modal('toggle');
         });
     }
-    else{
+    else {
         $('#login').attr('href', 'logout_user');
         $('#login').text('Logout ' + username);
     }
-    $('#formLogin').hide();
 });

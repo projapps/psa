@@ -22,21 +22,6 @@ a:active {
 table.dataTable tbody td { text-align: center; }
 #acronym { font-size: 64pt; }
 #menu { float: right; }
-#formLogin {
-    position: absolute;
-    right: 5px;
-    top: 20px;
-    z-index: 1;
-    text-align: right;
-}
-#error {
-    position: absolute;
-    right: 5px;
-    top: 20px;
-    z-index: 1;
-    text-align: right;
-    color: red;
-}
 #spacing { margin-bottom: 30px; }
 #sidebar { margin-right: 30px; float: left; width: 230px; }
 #main { overflow: auto; }
