@@ -29,21 +29,21 @@ class ServerSideProcessing
      *
      *  @param  array $columns Column information array
      *  @param  array $data    Data from the SQL get
-     *  @return array          Formatted data in a row based format
+     *  @return array          Formatted data in a class based format
      */
     static function data_output ( $columns, $data )
     {
         $out = array();
         for ( $i=0, $ien=count($data) ; $i<$ien ; $i++ ) {
-            $row = array();
+            $row = new \stdClass();
             for ( $j=0, $jen=count($columns) ; $j<$jen ; $j++ ) {
                 $column = $columns[$j];
                 // Is there a formatter?
                 if ( isset( $column['formatter'] ) ) {
-                    $row[ $column['dt'] ] = $column['formatter']( $data[$i][ $column['db'] ], $data[$i] );
+                    $row->{$column['db']} = $column['formatter']( $data[$i][ $column['db'] ], $data[$i] );
                 }
                 else {
-                    $row[ $column['dt'] ] = $data[$i][ $columns[$j]['db'] ];
+                    $row->{$column['db']} = $data[$i][ $columns[$j]['db'] ];
                 }
             }
             $out[] = $row;
