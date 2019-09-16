@@ -25,7 +25,7 @@
                 }
                 ?>
             </form -->
-            <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+            <table cellpadding="0" cellspacing="0" border="0" class="dataTable table table-striped" id="example">
                 <thead>
                 <tr>
                     <?php
@@ -47,11 +47,28 @@
 <script type="text/javascript">
     $(document).ready(function(){
         var oTable = $('#example').DataTable({
-            "bFilter": false,
-            "bSort": false,
-            "bJQueryUI": false,
-            "bProcessing": true,
-            "bServerSide": true,
+            "dom": 'Bfrtip',            // Needs button container
+            "select": 'single',
+            "responsive": true,
+            "altEditor": true,          // Enable altEditor
+            "buttons": [{
+                    text: 'Add',
+                    name: 'add'         // do not change name
+                },
+                {
+                    extend: 'selected', // Bind to Selected row
+                    text: 'Edit',
+                    name: 'edit'        // do not change name
+                },
+                {
+                    extend: 'selected', // Bind to Selected row
+                    text: 'Delete',
+                    name: 'delete'      // do not change name
+                },
+                {
+                    text: 'Refresh',
+                    name: 'refresh'     // do not change name
+                }],
             "sPaginationType": "full_numbers",
             "sAjaxSource": "<?=$menu['list_data']?>",
             "fnServerData": function (sSource, aoData, fnCallback){
