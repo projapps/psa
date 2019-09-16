@@ -67,7 +67,6 @@ class HomeController
         $args['username'] = $session['username'] == FALSE ? '' : $session['username'];
         $args['tablename'] = $session['tablename'] == FALSE ? 'psa_demo' : $session['tablename'];
         $args['menu'] = $request->getAttribute('menu');
-        $args['menu']['list_data'] = 'data/list/' . $args['tablename'];
         $args['version'] = $this->db->getAttribute(PDO::ATTR_SERVER_VERSION);
         $args['tables'] = $this->listTables();
         $args['fields'] = $this->fieldData($args['tablename']);

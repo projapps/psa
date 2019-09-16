@@ -55,29 +55,29 @@
                 }
             ],
             "sPaginationType": "full_numbers",
-            "sAjaxSource": "<?=$menu['list_data']?>",
-            "fnServerData": function (sSource, aoData, fnCallback) {
+            "ajax": {
+                "url": "<?=$menu['list_data']?>",
+                "type": "GET"
+            },
+            "onAddRow": function(datatable, rowdata, success, error) {
                 $.ajax({
-                    "dataType": 'json',
-                    "type": "POST",
-                    "url": sSource,
-                    "data": aoData,
-                    "success": fnCallback
+                    "url": "<?=$menu['add_data']?>",
+                    "type": "POST"
                 });
             },
-            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull){
-                nRow.id = aData[0];
-                return nRow;
+            "onEditRow": function(datatable, rowdata, success, error) {
+                $.ajax({
+                    "url": "<?=$menu['edit_data']?>",
+                    "type": "PUT"
+                });
+            },
+            "onDeleteRow": function(datatable, rowdata, success, error) {
+                $.ajax({
+                    "url": "<?=$menu['delete_data']?>",
+                    "type": "DELETE"
+                });
             }
         });
-        /*
-        oTable.makeEditable({
-            sUpdateURL: "<!-- ?php echo 'edit_data/' . $tablename ? -->",
-            sAddURL: "<!-- ?php echo 'add_data/' . $tablename ? -->",
-            sDeleteURL: "<!-- ?php echo 'remove_data/' . $tablename ? -->",
-            sAddDeleteToolbarSelector: ".dataTables_length"
-        });
-        */
     });
 </script>
 </body>

@@ -32,6 +32,12 @@ class DataController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
+    public function add(Request $request, Response $response, $args) {}
+
+    public function edit(Request $request, Response $response, $args) {}
+
+    public function delete(Request $request, Response $response, $args) {}
+
     private function getColumns($table) {
         $columns = array();
         $fields = array();
