@@ -5,44 +5,48 @@
 </head>
 <body>
 <?php include __DIR__ . '/boilerplate_menu.phtml'; ?>
-<?php include __DIR__ . '/boilerplate_side.phtml'; ?>
-<div id="main">
-    <h3>Please refer to this <a href="http://blog.projapps.com/?p=79"><u>blog post</u></a> for updated information.</h3>
-    <p><span style="text-decoration: underline;">Framework/Libraries used:</span></p>
-    <ul>
-        <li><a href="https://www.slimframework.com/" target="_blank">Slim Framework</a></li>
-        <li><a href="https://datatables.net/" target="_blank">DataTables</a> and its
-            <a href="https://editor.datatables.net/" target="_blank">Editor</a></li>
-        <li>PDO SQLite3 Driver</li>
-        <li><a href="http://jquery.com/" target="_blank">jQuery</a> and
-            <a href="http://jqueryui.com/" target="_blank">jQuery User Interface</a></li>
-    </ul>
-    <p><span style="text-decoration: underline;">Functionalities:</span></p>
-    <p>
-        Version 1.1 supports the adding, updating and deleting of table data as well as the creating and dropping of
-        tables. Only adding of column is allowed for altering table schema. What table is displayed for use depends on
-        which user is logged in.
-    </p>
-    <p><span style="text-decoration: underline;">Usage:</span></p>
-    <p><em>Logging into demo table,</em></p>
-    <ol>
-        <li>Click &#8216;Login&#8217; link.</li>
-        <li>Enter username/password as demo/demo.</li>
-        <li>psa_demo table will be displayed.</li>
-        <li>Click on &#8216;Add&#8217; button to add a new row.</li>
-        <li>Double-click on a field to edit.</li>
-        <li>Select a row and click &#8216;Delete&#8217; button to remove the row.</li>
-    </ol>
-    <p><em>Logging in as administrator,</em></p>
-    <ol>
-        <li>Click &#8216;Login&#8217; link.</li>
-        <li>Enter username/password as admin/admin. (This account is disabled in my online version. Fork the enabled
-            version <a href="https://github.com/nghianja/psa" target="_blank">here</a>.)</li>
-        <li>Admin panel will be displayed.</li>
-        <li>Click on table name in admin panel to edit/drop table.</li>
-        <li>Click on add_new_table in admin panel to create a table.</li>
-        <li>Click on psa_users in tables panel to add/remove a user or edit username, password and the table a user can access.</li>
-    </ol>
+<div class="container-fluid">
+    <div class="row">
+        <?php include __DIR__ . '/boilerplate_side.phtml'; ?>
+        <div class="col-sm-8">
+            <h3>Please refer to this <a href="http://blog.projapps.com/?p=79"><u>blog post</u></a> for updated information.</h3>
+            <p><span style="text-decoration: underline;">Framework/Libraries used:</span></p>
+            <ul>
+                <li><a href="https://www.slimframework.com/" target="_blank">Slim Framework</a></li>
+                <li><a href="https://datatables.net/" target="_blank">DataTables</a> and its
+                    <a href="https://editor.datatables.net/" target="_blank">Editor</a></li>
+                <li>PDO SQLite3 Driver</li>
+                <li><a href="http://jquery.com/" target="_blank">jQuery</a> and
+                    <a href="http://jqueryui.com/" target="_blank">jQuery User Interface</a></li>
+            </ul>
+            <p><span style="text-decoration: underline;">Functionalities:</span></p>
+            <p>
+                Version 1.1 supports the adding, updating and deleting of table data as well as the creating and dropping of
+                tables. Only adding of column is allowed for altering table schema. What table is displayed for use depends on
+                which user is logged in.
+            </p>
+            <p><span style="text-decoration: underline;">Usage:</span></p>
+            <p><em>Logging into demo table,</em></p>
+            <ol>
+                <li>Click &#8216;Login&#8217; link.</li>
+                <li>Enter username/password as demo/demo.</li>
+                <li>psa_demo table will be displayed.</li>
+                <li>Click on &#8216;Add&#8217; button to add a new row.</li>
+                <li>Double-click on a field to edit.</li>
+                <li>Select a row and click &#8216;Delete&#8217; button to remove the row.</li>
+            </ol>
+            <p><em>Logging in as administrator,</em></p>
+            <ol>
+                <li>Click &#8216;Login&#8217; link.</li>
+                <li>Enter username/password as admin/admin. (This account is disabled in my online version. Fork the enabled
+                    version <a href="https://github.com/nghianja/psa" target="_blank">here</a>.)</li>
+                <li>Admin panel will be displayed.</li>
+                <li>Click on table name in admin panel to edit/drop table.</li>
+                <li>Click on add_new_table in admin panel to create a table.</li>
+                <li>Click on psa_users in tables panel to add/remove a user or edit username, password and the table a user can access.</li>
+            </ol>
+        </div>
+    </div>
 </div>
 <?php include __DIR__ . '/boilerplate_body.phtml'; ?>
 </body>
