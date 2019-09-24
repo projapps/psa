@@ -20,7 +20,7 @@
         let columnDefs = [
             <?php
             foreach ($fields as $field) {
-                if ($field['name'] == "id") echo '{ type: "readonly", ';
+                if ($field['name'] == "id") echo '{ readonly: true, ';
                 else echo ",\r\n            { ";
                 echo 'data: "' . $field['name'] . '", ';
                 echo 'title: "' . $field['name'] . '" }';
@@ -60,21 +60,32 @@
                 "type": "GET"
             },
             "onAddRow": function(datatable, rowdata, success, error) {
+                console.log(rowdata);
                 $.ajax({
                     "url": "<?=$menu['add_data']?>",
-                    "type": "POST"
+                    "type": "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(rowdata),
+                    success: success,
+                    error: error
                 });
             },
             "onEditRow": function(datatable, rowdata, success, error) {
                 $.ajax({
                     "url": "<?=$menu['edit_data']?>",
-                    "type": "PUT"
+                    "type": "PUT",
+                    data: rowdata,
+                    success: success,
+                    error: error
                 });
             },
             "onDeleteRow": function(datatable, rowdata, success, error) {
                 $.ajax({
                     "url": "<?=$menu['delete_data']?>",
-                    "type": "DELETE"
+                    "type": "DELETE",
+                    data: rowdata,
+                    success: success,
+                    error: error
                 });
             }
         });

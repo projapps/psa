@@ -6,6 +6,7 @@ use PDO;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
 
 class DataController
 {
@@ -32,7 +33,18 @@ class DataController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function add(Request $request, Response $response, $args) {}
+    public function add(Request $request, Response $response, $args) {
+        $data = json_decode($request->getBody());
+        $columns = $this->getColumns($args['table']);
+        $result = array();
+        foreach ($columns as $column) {
+            $key = $column['db'];
+            $result[$column['db']] = $data->$key;
+        }
+        $payload = json_encode($result);
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
 
     public function edit(Request $request, Response $response, $args) {}
 
