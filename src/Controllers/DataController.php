@@ -34,14 +34,21 @@ class DataController
     }
 
     public function add(Request $request, Response $response, $args) {
-        $data = json_decode($request->getBody());
-        $columns = $this->getColumns($args['table']);
-        $result = array();
-        foreach ($columns as $column) {
-            $key = $column['db'];
-            $result[$column['db']] = $data->$key;
+        if ($this->isAuthorised($request, $args['table'])) {
+            $data = json_decode($request->getBody());
+            $columns = $this->getColumns($args['table']);
+            $result = array();
+            foreach ($columns as $column) {
+                $key = $column['db'];
+                $result[$column['db']] = $data->$key;
+            }
+            $payload = json_encode($result);
+        } else {
+            $response->withStatus(401);
+            $errors = array();
+            $errors['Unauthorized'] = "User is not allowed to add data.";
+            $payload = json_encode($errors);
         }
-        $payload = json_encode($result);
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }
@@ -49,6 +56,11 @@ class DataController
     public function edit(Request $request, Response $response, $args) {}
 
     public function delete(Request $request, Response $response, $args) {}
+
+    private function isAuthorised(Request $request, $table) {
+        $session = $request->getAttribute('session');
+        return ($session['username'] == 'admin' || $session['tablename'] == $table);
+    }
 
     private function getColumns($table) {
         $columns = array();
