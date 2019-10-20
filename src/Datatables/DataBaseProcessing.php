@@ -6,6 +6,10 @@ use PDOException;
 
 class DataBaseProcessing
 {
-    static function add ( $request, $db, $table, $columns )
-    {}
+    static function add ( $data, $db, $table, $columns )
+    {
+        $pluck = ServerSideProcessing::pluck($columns, 'db');
+        $sql = "INSERT INTO " . $table . "(" . implode(", ", $pluck) . ") VALUES()";
+        return $sql;
+    }
 }

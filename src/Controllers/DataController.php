@@ -1,12 +1,12 @@
 <?php
 namespace App\Controllers;
 
+use App\Datatables\DataBaseProcessing;
 use App\Datatables\ServerSideProcessing;
 use PDO;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Log\LoggerInterface;
 
 class DataController
 {
@@ -36,18 +36,22 @@ class DataController
     public function add(Request $request, Response $response, $args) {
         if ($this->isAuthorised($request, $args['table'])) {
             $data = json_decode($request->getBody());
-            $columns = $this->getColumns($args['table']);
+            $columns = $this->getColumns($args['table'], 'id');
             $result = array();
             foreach ($columns as $column) {
                 $key = $column['db'];
                 $result[$column['db']] = $data->$key;
             }
+            $id = DataBaseProcessing::add($data, $this->db, $args['table'], $columns);
+            $result['id'] = $id;
             $payload = json_encode($result);
         } else {
-            $response->withStatus(401);
+            $response = $response->withStatus(401);
             $errors = array();
-            $errors['Unauthorized'] = "User is not allowed to add data.";
-            $payload = json_encode($errors);
+            $errors['Unauthorized'][0] = "User is not allowed to add data.";
+            $responseJson = array();
+            $responseJson['errors'] = $errors;
+            $payload = json_encode($responseJson);
         }
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
@@ -59,10 +63,11 @@ class DataController
 
     private function isAuthorised(Request $request, $table) {
         $session = $request->getAttribute('session');
-        return ($session['username'] == 'admin' || $session['tablename'] == $table);
+        $tablename = $session['tablename'] == FALSE ? 'psa_demo' : $session['tablename'];
+        return ($session['username'] == 'admin' || $tablename == $table);
     }
 
-    private function getColumns($table) {
+    private function getColumns($table, $primaryKey = null) {
         $columns = array();
         $fields = array();
         $sql = "PRAGMA table_info(" . $table . ");";
@@ -74,6 +79,7 @@ class DataController
         }
         $counter = 0;
         foreach ($fields as $field) {
+            if ($primaryKey != null && $field['name'] == $primaryKey) continue;
             $columns[] = array('db' => $field['name'], 'dt' => $counter);
             $counter++;
         }
