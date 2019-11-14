@@ -37,29 +37,50 @@ class DataController
         if ($this->isAuthorised($request, $args['table'])) {
             $data = json_decode($request->getBody());
             $columns = $this->getColumns($args['table'], 'id');
-            $result = array();
-            foreach ($columns as $column) {
-                $key = $column['db'];
-                $result[$column['db']] = $data->$key;
+            if (DataBaseProcessing::add($data, $this->db, $args['table'], $columns)) {
+                $result = $this->buildResult($columns, $data);
+                $result['id'] = $this->db->lastInsertId();
+                $payload = json_encode($result);
+            } else {
+                $response = $response->withStatus(500);
+                $payload = $this->getErrorsPayload('Internal Server Error', "Unable to insert into database.");
             }
-            $id = DataBaseProcessing::add($data, $this->db, $args['table'], $columns);
-            $result['id'] = $id;
-            $payload = json_encode($result);
         } else {
             $response = $response->withStatus(401);
-            $errors = array();
-            $errors['Unauthorized'][0] = "User is not allowed to add data.";
-            $responseJson = array();
-            $responseJson['errors'] = $errors;
-            $payload = json_encode($responseJson);
+            $payload = $this->getErrorsPayload('Unauthorized', "User is not allowed to add data.");
         }
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function edit(Request $request, Response $response, $args) {}
+    public function edit(Request $request, Response $response, $args) {
+        if ($this->isAuthorised($request, $args['table'])) {
+            $data = json_decode($request->getBody());
+            $columns = $this->getColumns($args['table']);
+            if (DataBaseProcessing::edit($data, $this->db, $args['table'], $columns)) {
+                $result = $this->buildResult($columns, $data);
+                $payload = json_encode($result);
+            } else {
+                $response = $response->withStatus(500);
+                $payload = $this->getErrorsPayload('Internal Server Error', "Unable to update database.");
+            }
+        } else {
+            $response = $response->withStatus(401);
+            $payload = $this->getErrorsPayload('Unauthorized', "User is not allowed to edit data.");
+        }
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
 
     public function delete(Request $request, Response $response, $args) {}
+
+    private function getErrorsPayload($error_type, $error_message) {
+        $errors = array();
+        $errors[$error_type][0] = $error_message;
+        $responseJson = array();
+        $responseJson['errors'] = $errors;
+        return json_encode($responseJson);
+    }
 
     private function isAuthorised(Request $request, $table) {
         $session = $request->getAttribute('session');
@@ -84,5 +105,20 @@ class DataController
             $counter++;
         }
         return $columns;
+    }
+
+    /**
+     * @param array $columns
+     * @param $data
+     * @return array
+     */
+    private function buildResult(array $columns, $data): array
+    {
+        $result = array();
+        foreach ($columns as $column) {
+            $key = $column['db'];
+            $result[$key] = $data->$key;
+        }
+        return $result;
     }
 }

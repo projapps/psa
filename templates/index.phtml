@@ -74,7 +74,8 @@
                 $.ajax({
                     "url": "<?=$menu['edit_data']?>",
                     "type": "PUT",
-                    data: rowdata,
+                    contentType: "application/json",
+                    data: JSON.stringify(rowdata),
                     success: success,
                     error: error
                 });
@@ -83,7 +84,8 @@
                 $.ajax({
                     "url": "<?=$menu['delete_data']?>",
                     "type": "DELETE",
-                    data: rowdata,
+                    contentType: "application/json",
+                    data: JSON.stringify(rowdata),
                     success: success,
                     error: error
                 });
