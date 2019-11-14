@@ -35,7 +35,14 @@ class DataBaseProcessing
         return $stmt->execute();
     }
 
-    static function delete() {}
+    static function delete ( $data, PDO $db, $table )
+    {
+        $key = "id";
+        $sql = "DELETE FROM " . $table . " WHERE " . $key . " = :" . $key;
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':' . $key, $data->$key);
+        return $stmt->execute();
+    }
 
     /**
      * @param $data

@@ -72,7 +72,24 @@ class DataController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function delete(Request $request, Response $response, $args) {}
+    public function delete(Request $request, Response $response, $args) {
+        if ($this->isAuthorised($request, $args['table'])) {
+            $data = json_decode($request->getBody());
+            $columns = $this->getColumns($args['table']);
+            if (DataBaseProcessing::delete($data, $this->db, $args['table'])) {
+                $result = $this->buildResult($columns, $data);
+                $payload = json_encode($result);
+            } else {
+                $response = $response->withStatus(500);
+                $payload = $this->getErrorsPayload('Internal Server Error', "Unable to delete from database");
+            }
+        } else {
+            $response = $response->withStatus(401);
+            $payload = $this->getErrorsPayload('Unauthorized', "User is not allowed to edit data.");
+        }
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
 
     private function getErrorsPayload($error_type, $error_message) {
         $errors = array();
