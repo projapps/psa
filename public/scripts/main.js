@@ -3,6 +3,9 @@ $(document).ready(function() {
         $('#login').click(function() {
             $('#modalLogin').modal('toggle');
         });
+        if (hasErrors) {
+            $('#modalLogin').modal('show');
+        }
     }
     else {
         $('#login').attr('href', 'logout_user');

@@ -20,7 +20,7 @@
 <div class="modal fade" id="modalLogin" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="formLogin" method="post">
+            <form id="formLogin" method="post" action="<?=$menu['login']?>">
             <div class="modal-header">
                 <h5 class="modal-title">Login</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -28,16 +28,38 @@
                 </button>
             </div>
             <div class="modal-body">
-                    <div class="form-group">
-                        <label for="username"></label>
-                        <input type="text" class="form-control" name="username"
-                               id="username" placeholder="Username" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password"></label>
-                        <input type="password" class="form-control" name="password"
-                               id="password" placeholder="Password" required>
-                    </div>
+                <div class="form-group">
+                    <label for="username"></label>
+                    <input type="text" class="form-control <?= array_key_exists('username', $errors) ? 'is-invalid' : '' ?>"
+                           name="username" id="username" placeholder="Username" required>
+                    <?php if (array_key_exists('username', $errors)): ?>
+                    <p class="invalid-feedback">
+                        <?php
+                        foreach ($errors['username'] as $messages) {
+                            foreach ($messages as $message) {
+                                echo $message . ". ";
+                            }
+                        }
+                        ?>
+                    </p>
+                    <?php endif; ?>
+                </div>
+                <div class="form-group">
+                    <label for="password"></label>
+                    <input type="password" class="form-control <?= array_key_exists('password', $errors) ? 'is-invalid' : '' ?>"
+                           name="password" id="password" placeholder="Password" required>
+                    <?php if (array_key_exists('password', $errors)): ?>
+                        <p class="invalid-feedback">
+                            <?php
+                            foreach ($errors['password'] as $messages) {
+                                foreach ($messages as $message) {
+                                    echo $message . ". ";
+                                }
+                            }
+                            ?>
+                        </p>
+                    <?php endif; ?>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

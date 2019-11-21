@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use App\Controllers\DataController;
 use App\Controllers\HomeController;
@@ -11,13 +12,15 @@ return function (App $app) {
     $app->group('', function (Group $group) {
         $group->get('/', HomeController::class . ':home')->setName('home');
         $group->get('/about', HomeController::class . ':about')->setName('about');
+        $group->post('/login', HomeController::class . ':login')->setName('login');
     })->add(function (Request $request, RequestHandler $handler) use ($app) {
         $session = $request->getAttribute('session');
-        $tablename = $session['tablename'] == FALSE ? 'psa_demo' : $session['tablename'];
+        $tablename = isset($session['tablename']) ? $session['tablename'] : 'psa_demo';
         $routeParser = $app->getRouteCollector()->getRouteParser();
         $menu = [
             'home' => $routeParser->urlFor('home'),
             'about' => $routeParser->urlFor('about'),
+            'login' => $routeParser->urlFor('login'),
             'list_data' => $routeParser->urlFor('list_data', [ 'table' => $tablename ]),
             'add_data' => $routeParser->urlFor('add_data', [ 'table' => $tablename ]),
             'edit_data' => $routeParser->urlFor('edit_data', [ 'table' => $tablename ]),

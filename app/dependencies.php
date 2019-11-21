@@ -1,11 +1,14 @@
 <?php
+declare(strict_types=1);
 
+use App\Validators\RespectValidator;
 use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Slim\Flash\Messages;
 use Slim\Views\PhpRenderer;
 
 return function (ContainerBuilder $containerBuilder) {
@@ -25,6 +28,12 @@ return function (ContainerBuilder $containerBuilder) {
             $rendererSettings = $settings['renderer'];
             $renderer = new PhpRenderer($rendererSettings['template_path']);
             return $renderer;
+        },
+        Messages::class => function (ContainerInterface $c) {
+            return new Messages();
+        },
+        RespectValidator::class => function (ContainerInterface $c) {
+            return new RespectValidator();
         }
     ]);
 };

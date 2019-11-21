@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Handlers;
 
+use App\ResponseEmitter\SlimResponseEmitter;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpInternalServerErrorException;
-use Slim\ResponseEmitter;
 
 class ShutdownHandler
 {
@@ -71,7 +73,7 @@ class ShutdownHandler
             $response = $this->errorHandler->__invoke($this->request, $exception, $this->displayErrorDetails, false, false);
 
             ob_clean();
-            $responseEmitter = new ResponseEmitter();
+            $responseEmitter = new SlimResponseEmitter();
             $responseEmitter->emit($response);
         }
     }
