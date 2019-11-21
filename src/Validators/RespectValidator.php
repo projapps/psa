@@ -8,12 +8,14 @@ use Respect\Validation\Exceptions\NestedValidationException;
 class RespectValidator
 {
     protected $errors;
+    protected $inputs;
 
     public function validate(Request $request, array $rules)
     {
         $data = $request->getParsedBody();
         foreach ($rules as $field => $rule) {
             try {
+                $this->inputs[$field] = $data[$field];
                 $rule->setName(ucfirst($field))->assert($data[$field]);
             } catch (NestedValidationException $e) {
                 $this->errors[$field] = $e->getMessages();
@@ -30,5 +32,10 @@ class RespectValidator
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    public function getInputs()
+    {
+        return $this->inputs;
     }
 }

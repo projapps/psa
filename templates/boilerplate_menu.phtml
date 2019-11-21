@@ -30,15 +30,16 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="username"></label>
-                    <input type="text" class="form-control <?= array_key_exists('username', $errors) ? 'is-invalid' : '' ?>"
-                           name="username" id="username" placeholder="Username" required>
-                    <?php if (array_key_exists('username', $errors)): ?>
+                    <input type="text" name="username" id="username" placeholder="Username"
+                           class="form-control <?=
+                           (!empty($errors) && array_key_exists('username', $errors[0])) ? 'is-invalid' : '' ?>"
+                           value="<?= empty($inputs) ? '' : $inputs[0]['username'] ?>" required>
+                    <?php if (!empty($errors) && array_key_exists('username', $errors[0])): ?>
                     <p class="invalid-feedback">
                         <?php
-                        foreach ($errors['username'] as $messages) {
-                            foreach ($messages as $message) {
-                                echo $message . ". ";
-                            }
+                        $messages = $errors[0]['username'];
+                        foreach ($messages as $message) {
+                            echo $message . ". ";
                         }
                         ?>
                     </p>
@@ -46,15 +47,16 @@
                 </div>
                 <div class="form-group">
                     <label for="password"></label>
-                    <input type="password" class="form-control <?= array_key_exists('password', $errors) ? 'is-invalid' : '' ?>"
-                           name="password" id="password" placeholder="Password" required>
-                    <?php if (array_key_exists('password', $errors)): ?>
+                    <input type="password" name="password" id="password" placeholder="Password"
+                           class="form-control <?=
+                           (!empty($errors) && array_key_exists('password', $errors[0])) ? 'is-invalid' : '' ?>"
+                           value="<?= empty($inputs) ? '' : $inputs[0]['password'] ?>" required>
+                    <?php if (!empty($errors) && array_key_exists('password', $errors[0])): ?>
                         <p class="invalid-feedback">
                             <?php
-                            foreach ($errors['password'] as $messages) {
-                                foreach ($messages as $message) {
-                                    echo $message . ". ";
-                                }
+                            $messages = $errors[0]['password'];
+                            foreach ($messages as $message) {
+                                echo $message . ". ";
                             }
                             ?>
                         </p>

@@ -47,10 +47,8 @@ class HomeController
             'password' => Validator::noWhitespace()->notEmpty()
         ]);
         if ($validation->failed()) {
-            $errors = $validation->getErrors();
-            foreach ($errors as $key => $value) {
-                $this->flash->addMessage($key, $value);
-            }
+            $this->flash->addMessage('errors', $validation->getErrors());
+            $this->flash->addMessage('inputs', $validation->getInputs());
         }
         return $response->withHeader('Location', '/')->withStatus(302);
     }
@@ -93,7 +91,8 @@ class HomeController
         $args['version'] = $this->db->getAttribute(PDO::ATTR_SERVER_VERSION);
         $args['tables'] = $this->listTables();
         $args['fields'] = $this->fieldData($args['tablename']);
-        $args['errors'] = $this->flash->getMessages();
+        $args['errors'] = $this->flash->getMessage('errors');
+        $args['inputs'] = $this->flash->getMessage('inputs');
         return $args;
     }
 }
