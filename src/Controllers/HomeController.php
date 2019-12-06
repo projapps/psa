@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Datatables\DataBaseProcessing;
 use App\Validators\RespectValidator;
 use PDO;
 use Psr\Container\ContainerInterface;
@@ -49,6 +50,21 @@ class HomeController
         if ($validation->failed()) {
             $this->flash->addMessage('errors', $validation->getErrors());
             $this->flash->addMessage('inputs', $validation->getInputs());
+        } else {
+            $data = $request->getParsedBody();
+            $data['password'] = md5($data['password']);
+            $columns = array();
+            $counter = 0;
+            foreach ($this->fieldData('psa_users') as $field) {
+                $columns[] = array('db' => $field['name'], 'dt' => $counter);
+                $counter++;
+            }
+            $result = DataBaseProcessing::check($data, $this->db, 'psa_users', $columns);
+            if (count($result) > 0) {
+                $session = $request->getAttribute('session');
+//                $session['username'] = $data['username'];
+                var_dump($result);
+            } else {}
         }
         return $response->withHeader('Location', '/')->withStatus(302);
     }

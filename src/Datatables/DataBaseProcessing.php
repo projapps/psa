@@ -44,6 +44,23 @@ class DataBaseProcessing
         return $stmt->execute();
     }
 
+    static function check ( $data, PDO $db, $table, $columns )
+    {
+        $pluck = ServerSideProcessing::pluck($columns, 'db');
+        $sql = "SELECT " . implode(", ", $pluck) . " FROM " . $table;
+        $and = false;
+        foreach ($data as $key => $value) {
+            if ($and) {
+                $sql .= " AND " . $key . " = :" . $key;
+            } else {
+                $sql .= " WHERE " . $key . " = :" . $key;
+                $and = true;
+            }
+        }
+        $stmt = self::bindValues($data, $db, $columns, $sql);
+        return $stmt->fetchAll();
+    }
+
     /**
      * @param $data
      * @param PDO $db
@@ -56,7 +73,8 @@ class DataBaseProcessing
         $stmt = $db->prepare($sql);
         foreach ($columns as $column) {
             $key = $column['db'];
-            $stmt->bindValue(':' . $key, $data->$key);
+            if (array_key_exists($key, $data))
+                $stmt->bindValue(':' . $key, $data->$key);
         }
         return $stmt;
     }

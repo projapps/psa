@@ -101,8 +101,9 @@ class DataController
 
     private function isAuthorised(Request $request, $table) {
         $session = $request->getAttribute('session');
-        $tablename = $session['tablename'] == FALSE ? 'psa_demo' : $session['tablename'];
-        return ($session['username'] == 'admin' || $tablename == $table);
+        $username = isset($session['username']) ? $session['username'] : '';
+        $tablename = isset($session['tablename']) ? $session['tablename'] : '';
+        return ($username == 'admin' || $tablename == $table);
     }
 
     private function getColumns($table, $primaryKey = null) {
