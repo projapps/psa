@@ -52,6 +52,8 @@ class HomeController
             $this->flash->addMessage('inputs', $validation->getInputs());
         } else {
             $data = $request->getParsedBody();
+            $inputs['username'] = $data['username'];
+            $inputs['password'] = $data['password'];
             $data['password'] = md5($data['password']);
             $columns = array();
             $counter = 0;
@@ -59,13 +61,21 @@ class HomeController
                 $columns[] = array('db' => $field['name'], 'dt' => $counter);
                 $counter++;
             }
-            $result = DataBaseProcessing::check($data, $this->db, 'psa_users', $columns);
+            $result = DataBaseProcessing::check((object) $data, $this->db, 'psa_users', $columns);
             if (count($result) > 0) {
-                $session = $request->getAttribute('session');
-//                $session['username'] = $data['username'];
-                var_dump($result);
-            } else {}
+                $_SESSION['username'] = $result[0]['username'];
+                $_SESSION['tablename'] = $result[0]['tablename'];
+            } else {
+                $errors['login'] = "User authentication failed.";
+                $this->flash->addMessage('errors', $errors);
+                $this->flash->addMessage("inputs", $inputs);
+            }
         }
+        return $response->withHeader('Location', '/')->withStatus(302);
+    }
+
+    public function logout(Request $request, Response $response, $args) {
+        session_unset();
         return $response->withHeader('Location', '/')->withStatus(302);
     }
 

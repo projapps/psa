@@ -13,6 +13,7 @@ return function (App $app) {
         $group->get('/', HomeController::class . ':home')->setName('home');
         $group->get('/about', HomeController::class . ':about')->setName('about');
         $group->post('/login', HomeController::class . ':login')->setName('login');
+        $group->any('/logout', HomeController::class . ':logout')->setName('logout');
     })->add(function (Request $request, RequestHandler $handler) use ($app) {
         $session = $request->getAttribute('session');
         $tablename = isset($session['tablename']) ? $session['tablename'] : 'psa_demo';
@@ -21,6 +22,7 @@ return function (App $app) {
             'home' => $routeParser->urlFor('home'),
             'about' => $routeParser->urlFor('about'),
             'login' => $routeParser->urlFor('login'),
+            'logout' => $routeParser->urlFor('logout'),
             'list_data' => $routeParser->urlFor('list_data', [ 'table' => $tablename ]),
             'add_data' => $routeParser->urlFor('add_data', [ 'table' => $tablename ]),
             'edit_data' => $routeParser->urlFor('edit_data', [ 'table' => $tablename ]),

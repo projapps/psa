@@ -58,6 +58,7 @@ class DataBaseProcessing
             }
         }
         $stmt = self::bindValues($data, $db, $columns, $sql);
+        $stmt->execute();
         return $stmt->fetchAll();
     }
 
@@ -73,7 +74,7 @@ class DataBaseProcessing
         $stmt = $db->prepare($sql);
         foreach ($columns as $column) {
             $key = $column['db'];
-            if (array_key_exists($key, $data))
+            if (property_exists($data, $key))
                 $stmt->bindValue(':' . $key, $data->$key);
         }
         return $stmt;

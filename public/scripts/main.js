@@ -8,7 +8,7 @@ $(document).ready(function() {
         }
     }
     else {
-        $('#login').attr('href', 'logout_user');
+        $('#login').attr('href', '/logout');
         $('#login').text('Logout ' + username);
     }
 });

@@ -28,6 +28,11 @@
                 </button>
             </div>
             <div class="modal-body">
+                <?php if (!empty($errors) && array_key_exists('login', $errors[0])): ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= $errors[0]['login'] ?>
+                </div>
+                <?php endif; ?>
                 <div class="form-group">
                     <label for="username"></label>
                     <input type="text" name="username" id="username" placeholder="Username"

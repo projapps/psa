@@ -15,9 +15,10 @@ class SessionMiddleware implements Middleware
      */
     public function process(Request $request, RequestHandler $handler): Response
     {
-//        var_dump($_SERVER);
+        // var_dump($_SERVER);
 //        if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
             session_start();
+            // add the session storage to your request as [READ-ONLY]
             $request = $request->withAttribute('session', $_SESSION);
 //        }
         return $handler->handle($request);
