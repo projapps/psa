@@ -36,6 +36,8 @@ class DataController
     public function add(Request $request, Response $response, $args) {
         if ($this->isAuthorised($request, $args['table'])) {
             $data = json_decode($request->getBody());
+            if (property_exists($data, "password"))
+                $data->password = md5($data->password);
             $columns = $this->getColumns($args['table'], 'id');
             if (DataBaseProcessing::add($data, $this->db, $args['table'], $columns)) {
                 $result = $this->buildResult($columns, $data);
@@ -56,6 +58,8 @@ class DataController
     public function edit(Request $request, Response $response, $args) {
         if ($this->isAuthorised($request, $args['table'])) {
             $data = json_decode($request->getBody());
+            if (property_exists($data, "password"))
+                $data->password = md5($data->password);
             $columns = $this->getColumns($args['table']);
             if (DataBaseProcessing::edit($data, $this->db, $args['table'], $columns)) {
                 $result = $this->buildResult($columns, $data);

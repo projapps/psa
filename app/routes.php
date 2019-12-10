@@ -38,4 +38,9 @@ return function (App $app) {
         $group->put('/edit/{table}', DataController::class . ':edit')->setName('edit_data');
         $group->delete('/delete/{table}', DataController::class . ':delete')->setName('delete_data');
     });
+
+    $app->group('/admin', function (Group $group) {
+        $group->get('/add', \App\Controllers\AdminController::class . ':add')->setName('add_admin');
+        $group->get('/edit/{table}', \App\Controllers\AdminController::class . ':edit')->setName('edit_admin');
+    });
 };
