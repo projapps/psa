@@ -6,7 +6,7 @@ use PDOException;
 
 class DataBaseProcessing
 {
-    static function add ( $data, PDO $db, $table, $columns )
+    static function insert ( $data, PDO $db, $table, $columns )
     {
         $pluck = ServerSideProcessing::pluck($columns, 'db');
         $sql = "INSERT INTO " . $table . "(" . implode(", ", $pluck) .
@@ -15,7 +15,7 @@ class DataBaseProcessing
         return $stmt->execute();
     }
 
-    static function edit ( $data, PDO $db, $table, $columns )
+    static function update ( $data, PDO $db, $table, $columns )
     {
         $sql = "UPDATE " . $table;
         $comma = false;

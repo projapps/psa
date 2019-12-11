@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Controllers\AdminController;
 use App\Controllers\DataController;
 use App\Controllers\HomeController;
 use Psr\Http\Message\ServerRequestInterface as Request;

@@ -39,7 +39,7 @@ class DataController
             if (property_exists($data, "password"))
                 $data->password = md5($data->password);
             $columns = $this->getColumns($args['table'], 'id');
-            if (DataBaseProcessing::add($data, $this->db, $args['table'], $columns)) {
+            if (DataBaseProcessing::insert($data, $this->db, $args['table'], $columns)) {
                 $result = $this->buildResult($columns, $data);
                 $result['id'] = $this->db->lastInsertId();
                 $payload = json_encode($result);
@@ -61,7 +61,7 @@ class DataController
             if (property_exists($data, "password"))
                 $data->password = md5($data->password);
             $columns = $this->getColumns($args['table']);
-            if (DataBaseProcessing::edit($data, $this->db, $args['table'], $columns)) {
+            if (DataBaseProcessing::update($data, $this->db, $args['table'], $columns)) {
                 $result = $this->buildResult($columns, $data);
                 $payload = json_encode($result);
             } else {
