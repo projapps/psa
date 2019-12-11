@@ -9,12 +9,7 @@ use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 return function (App $app) {
-    $app->group('', function (Group $group) {
-        $group->get('/', HomeController::class . ':home')->setName('home');
-        $group->get('/about', HomeController::class . ':about')->setName('about');
-        $group->post('/login', HomeController::class . ':login')->setName('login');
-        $group->any('/logout', HomeController::class . ':logout')->setName('logout');
-    })->add(function (Request $request, RequestHandler $handler) use ($app) {
+    $mw = function (Request $request, RequestHandler $handler) use ($app) {
         $session = $request->getAttribute('session');
         $tablename = isset($session['tablename']) ? $session['tablename'] : 'psa_demo';
         $routeParser = $app->getRouteCollector()->getRouteParser();
@@ -30,7 +25,14 @@ return function (App $app) {
         ];
         $request = $request->withAttribute('menu', $menu);
         return $handler->handle($request);
-    });
+    };
+
+    $app->group('', function (Group $group) {
+        $group->get('/', HomeController::class . ':home')->setName('home');
+        $group->get('/about', HomeController::class . ':about')->setName('about');
+        $group->post('/login', HomeController::class . ':login')->setName('login');
+        $group->any('/logout', HomeController::class . ':logout')->setName('logout');
+    })->add($mw);
 
     $app->group('/data', function (Group $group) {
         $group->get('/list/{table}', DataController::class . ':list')->setName('list_data');
@@ -42,5 +44,5 @@ return function (App $app) {
     $app->group('/admin', function (Group $group) {
         $group->get('/add', \App\Controllers\AdminController::class . ':add')->setName('add_admin');
         $group->get('/edit/{table}', \App\Controllers\AdminController::class . ':edit')->setName('edit_admin');
-    });
+    })->add($mw);
 };
