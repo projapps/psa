@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use PDO;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -10,12 +11,14 @@ use Slim\Views\PhpRenderer;
 class AdminController
 {
     protected $container;
+    protected $db;
     protected $flash;
     protected $renderer;
 
     // constructor receives container instance
     public function __construct(ContainerInterface $container) {
         $this->container = $container;
+        $this->db = $this->container->get(PDO::class);
         $this->flash = $this->container->get(Messages::class);
         $this->renderer = $this->container->get(PhpRenderer::class);
     }
@@ -39,6 +42,18 @@ class AdminController
         return ($username == 'admin');
     }
 
+    private function listTables() {
+        $tables = array();
+        $sql = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name";
+        $result = $this->db->query($sql);
+        if ($result) {
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                $tables[] = $row['name'];
+            }
+        }
+        return $tables;
+    }
+
     /**
      * @param Request $request
      * @param $args
@@ -52,7 +67,6 @@ class AdminController
         $args['menu'] = $request->getAttribute('menu');
         $args['version'] = $this->db->getAttribute(PDO::ATTR_SERVER_VERSION);
         $args['tables'] = $this->listTables();
-        $args['fields'] = $this->fieldData($args['tablename']);
         $args['errors'] = $this->flash->getMessage('errors');
         $args['inputs'] = $this->flash->getMessage('inputs');
         return $args;

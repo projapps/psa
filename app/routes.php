@@ -22,7 +22,8 @@ return function (App $app) {
             'list_data' => $routeParser->urlFor('list_data', [ 'table' => $tablename ]),
             'add_data' => $routeParser->urlFor('add_data', [ 'table' => $tablename ]),
             'edit_data' => $routeParser->urlFor('edit_data', [ 'table' => $tablename ]),
-            'delete_data' => $routeParser->urlFor('delete_data', [ 'table' => $tablename ])
+            'delete_data' => $routeParser->urlFor('delete_data', [ 'table' => $tablename ]),
+            'add_admin' => $routeParser->urlFor('add_admin')
         ];
         $request = $request->withAttribute('menu', $menu);
         return $handler->handle($request);
