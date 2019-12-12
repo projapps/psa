@@ -26,10 +26,12 @@ return function (App $app) {
             'delete_data' => $routeParser->urlFor('delete_data', [ 'table' => $tablename ]),
             'add_admin' => $routeParser->urlFor('add_admin'),
             'edit_admin' => $routeParser->urlFor('edit_admin'),
-            'list_schema' => $routeParser->urlFor('list_schema'),
-            'add_schema' => $routeParser->urlFor('add_schema'),
-            'edit_schema' => $routeParser->urlFor('edit_schema'),
-            'remove_schema' => $routeParser->urlFor('remove_schema')
+            'add_table' => $routeParser->urlFor('add_table'),
+            'remove_table' => $routeParser->urlFor('remove_table'),
+            'list_schema' => $routeParser->urlFor('list_schema', [ 'table' => '' ]),
+            'add_schema' => $routeParser->urlFor('add_schema', [ 'table' => '' ]),
+            'edit_schema' => $routeParser->urlFor('edit_schema', [ 'table' => '' ]),
+            'remove_schema' => $routeParser->urlFor('remove_schema', [ 'table' => '' ])
         ];
         $request = $request->withAttribute('menu', $menu);
         return $handler->handle($request);
@@ -50,14 +52,16 @@ return function (App $app) {
     });
 
     $app->group('/admin', function (Group $group) {
-        $group->get('/add', AdminController::class . ':add')->setName('add_admin');
-        $group->get('/edit/[{table}]', AdminController::class . ':edit')->setName('edit_admin');
+        $group->get('/new', AdminController::class . ':new')->setName('add_admin');
+        $group->get('/open/[{table}]', AdminController::class . ':open')->setName('edit_admin');
+        $group->post('/add', AdminController::class . ':add')->setName('add_table');
+        $group->delete('/remove/[{table}]', AdminController::class . ':remove')->setName('remove_table');
     })->add($mw);
 
     $app->group('/schema', function (Group $group) {
-        $group->get('/list[/{table}]', SchemaController::class . ':get')->setName('list_schema');
-        $group->post('/create[/{table}]', SchemaController::class . ':add')->setName('add_schema');
-        $group->put('/replace[/{table}]', SchemaController::class . ':edit')->setName('edit_schema');
-        $group->delete('/delete[/{table}]', SchemaController::class . ':remove')->setName('remove_schema');
-    })->add($mw);
+        $group->get('/list/{table}', SchemaController::class . ':get')->setName('list_schema');
+        $group->post('/create/{table}', SchemaController::class . ':add')->setName('add_schema');
+        $group->put('/replace/{table}', SchemaController::class . ':edit')->setName('edit_schema');
+        $group->delete('/delete/{table}', SchemaController::class . ':remove')->setName('remove_schema');
+    });
 };

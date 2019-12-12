@@ -24,7 +24,7 @@ class AdminController
         $this->renderer = $this->container->get(PhpRenderer::class);
     }
 
-    public function add(Request $request, Response $response, $args) {
+    public function new(Request $request, Response $response, $args) {
         if ($this->isAuthorised($request)) {
             $args = $this->setArgs($request, $args);
             $args['nav']['home'] = '';
@@ -33,6 +33,19 @@ class AdminController
             return $this->renderer->render($response, 'admin.phtml', $args);
         } else {
             $errors['login'] = "User is not allowed to add table.";
+            $this->flash->addMessage('errors', $errors);
+            return $response->withHeader('Location', '/')->withStatus(302);
+        }
+    }
+
+    public function open(Request $request, Response $response, $args) {
+        if ($this->isAuthorised($request)) {
+            $args = $this->setArgs($request, $args);
+            $args['nav']['home'] = '';
+            $args['nav']['about'] = '';
+            return $this->renderer->render($response, 'admin.phtml', $args);
+        } else {
+            $errors['login'] = "User is not allowed to edit table.";
             $this->flash->addMessage('errors', $errors);
             return $response->withHeader('Location', '/')->withStatus(302);
         }

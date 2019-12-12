@@ -14,11 +14,11 @@
                     <div class="form-group">
                         <input type="hidden" name="id" id="id" value="DATAROWID" rel="0">
                     </div>
-                    <div class="form-group col-sm-6">
+                    <div class="form-group col">
                         <label for="fieldname">Field Name</label>
                         <input type="text" name="fieldname" id="fieldname" class="form-control" rel="1" required>
                     </div>
-                    <div class="form-group col-sm-6">
+                    <div class="form-group col">
                         <label for="fieldtype">Field Type</label>
                         <select name="fieldtype" id="fieldtype" class="form-control" rel="2">
                             <option value="TEXT" selected>TEXT</option>
@@ -30,9 +30,42 @@
                     </div>
                 </div>
             </form>
+            <br><br>
             <?php if ($tablename == ''): ?>
+                <h3>Add New Table</h3>
+                <br>
+                <form method="post" action="<?=$menu['add_table']?><?=$tablename?>" id="formAddTable">
+                    <div class="form-group row">
+                        <label for="tablename" class="col-sm-2 col-form-label">Table Name :</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="tablename" id="tablename" class="form-control">
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" name="tablefields" id="tablefields">
+                            <input type="submit" name="create" value="Create Table">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Define Fields :</label>
+                    </div>
+                </form>
             <?php else: ?>
+                <h3>Edit/Remove Table</h3>
+                <br>
+                <form method="delete" action="<?=$menu['remove_table']?><?=$tablename?>" id="formDeleteTable">
+                    <div class="form-group row">
+                        <label for="tablename" class="col-sm-2 col-form-label">Table Name :</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="tablename" id="tablename" class="form-control" value="<?=$tablename?>" readonly>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="submit" name="delete" value="Drop Table">
+                        </div>
+                    </div>
+                </form>
             <?php endif; ?>
+            <table cellpadding="0" cellspacing="0" border="0" class="dataTable table table-striped" id="example">
+            </table>
         </div>
     </div>
 </div>
