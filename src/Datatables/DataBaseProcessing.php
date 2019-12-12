@@ -44,7 +44,7 @@ class DataBaseProcessing
         return $stmt->execute();
     }
 
-    static function check ( $data, PDO $db, $table, $columns )
+    static function select ( $data, PDO $db, $table, $columns )
     {
         $pluck = ServerSideProcessing::pluck($columns, 'db');
         $sql = "SELECT " . implode(", ", $pluck) . " FROM " . $table;
@@ -60,6 +60,28 @@ class DataBaseProcessing
         $stmt = self::bindValues($data, $db, $columns, $sql);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    static function create ()
+    {}
+
+    static function alter ()
+    {}
+
+    static function drop ()
+    {}
+
+    static function list (PDO $db)
+    {
+        $tables = array();
+        $sql = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name";
+        $result = $db->query($sql);
+        if ($result) {
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                $tables[] = $row['name'];
+            }
+        }
+        return $tables;
     }
 
     /**

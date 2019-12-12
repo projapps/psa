@@ -23,7 +23,7 @@
             echo '<legend class="w-auto">Admin</legend>';
             echo '<p>';
             foreach ($tables as $table) {
-                echo '<a href="/admin/edit/' . $table . '">' . $table . '</a>';
+                echo '<a href="' . $menu['edit_admin'] . $table . '">' . $table . '</a>';
                 echo '<br>';
             }
             echo '<a href="' . $menu['add_admin'] . '">add_new_table</a>';

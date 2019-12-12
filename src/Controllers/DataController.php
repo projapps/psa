@@ -19,7 +19,7 @@ class DataController
         $this->db = $this->container->get(PDO::class);
     }
 
-    public function list(Request $request, Response $response, $args) {
+    public function get(Request $request, Response $response, $args) {
         $columns = $this->getColumns($args['table']);
         $payload = json_encode(
             ServerSideProcessing::simple(
@@ -76,7 +76,7 @@ class DataController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function delete(Request $request, Response $response, $args) {
+    public function remove(Request $request, Response $response, $args) {
         if ($this->isAuthorised($request, $args['table'])) {
             $data = json_decode($request->getBody());
             $columns = $this->getColumns($args['table']);

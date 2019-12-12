@@ -8,8 +8,38 @@
 <div class="container-fluid">
     <div class="row">
         <?php include __DIR__ . '/boilerplate_side.phtml'; ?>
+        <div class="col-sm-8">
+            <form method="post" action="<?=$menu['list_schema']?><?=$tablename?>" id="formAddNewRow" title="Add New Field">
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="hidden" name="id" id="id" value="DATAROWID" rel="0">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="fieldname">Field Name</label>
+                        <input type="text" name="fieldname" id="fieldname" class="form-control" rel="1" required>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="fieldtype">Field Type</label>
+                        <select name="fieldtype" id="fieldtype" class="form-control" rel="2">
+                            <option value="TEXT" selected>TEXT</option>
+                            <option value="NUMERIC">NUMERIC</option>
+                            <option value="INTEGER">INTEGER</option>
+                            <option value="REAL">REAL</option>
+                            <option value="BLOB">BLOB</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+            <?php if ($tablename == ''): ?>
+            <?php else: ?>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 <?php include __DIR__ . '/boilerplate_body.phtml'; ?>
+<script type="text/javascript">
+    $(document).ready(function() {
+    });
+</script>
 </body>
 </html>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 use App\Controllers\AdminController;
 use App\Controllers\DataController;
 use App\Controllers\HomeController;
+use App\Controllers\SchemaController;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\App;
@@ -23,12 +24,17 @@ return function (App $app) {
             'add_data' => $routeParser->urlFor('add_data', [ 'table' => $tablename ]),
             'edit_data' => $routeParser->urlFor('edit_data', [ 'table' => $tablename ]),
             'delete_data' => $routeParser->urlFor('delete_data', [ 'table' => $tablename ]),
-            'add_admin' => $routeParser->urlFor('add_admin')
+            'add_admin' => $routeParser->urlFor('add_admin'),
+            'edit_admin' => $routeParser->urlFor('edit_admin'),
+            'list_schema' => $routeParser->urlFor('list_schema'),
+            'add_schema' => $routeParser->urlFor('add_schema'),
+            'edit_schema' => $routeParser->urlFor('edit_schema'),
+            'remove_schema' => $routeParser->urlFor('remove_schema')
         ];
         $request = $request->withAttribute('menu', $menu);
         return $handler->handle($request);
     };
-
+    
     $app->group('', function (Group $group) {
         $group->get('/', HomeController::class . ':home')->setName('home');
         $group->get('/about', HomeController::class . ':about')->setName('about');
@@ -37,14 +43,21 @@ return function (App $app) {
     })->add($mw);
 
     $app->group('/data', function (Group $group) {
-        $group->get('/list/{table}', DataController::class . ':list')->setName('list_data');
-        $group->post('/add/{table}', DataController::class . ':add')->setName('add_data');
-        $group->put('/edit/{table}', DataController::class . ':edit')->setName('edit_data');
-        $group->delete('/delete/{table}', DataController::class . ':delete')->setName('delete_data');
+        $group->get('/list/{table}', DataController::class . ':get')->setName('list_data');
+        $group->post('/create/{table}', DataController::class . ':add')->setName('add_data');
+        $group->put('/replace/{table}', DataController::class . ':edit')->setName('edit_data');
+        $group->delete('/delete/{table}', DataController::class . ':remove')->setName('delete_data');
     });
 
     $app->group('/admin', function (Group $group) {
-        $group->get('/add', \App\Controllers\AdminController::class . ':add')->setName('add_admin');
-        $group->get('/edit/{table}', \App\Controllers\AdminController::class . ':edit')->setName('edit_admin');
+        $group->get('/add', AdminController::class . ':add')->setName('add_admin');
+        $group->get('/edit/[{table}]', AdminController::class . ':edit')->setName('edit_admin');
+    })->add($mw);
+
+    $app->group('/schema', function (Group $group) {
+        $group->get('/list[/{table}]', SchemaController::class . ':get')->setName('list_schema');
+        $group->post('/create[/{table}]', SchemaController::class . ':add')->setName('add_schema');
+        $group->put('/replace[/{table}]', SchemaController::class . ':edit')->setName('edit_schema');
+        $group->delete('/delete[/{table}]', SchemaController::class . ':remove')->setName('remove_schema');
     })->add($mw);
 };

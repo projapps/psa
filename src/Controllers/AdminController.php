@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Datatables\DataBaseProcessing;
 use PDO;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -28,6 +29,7 @@ class AdminController
             $args = $this->setArgs($request, $args);
             $args['nav']['home'] = '';
             $args['nav']['about'] = '';
+            $args['tablename'] = '';
             return $this->renderer->render($response, 'admin.phtml', $args);
         } else {
             $errors['login'] = "User is not allowed to add table.";
@@ -42,18 +44,6 @@ class AdminController
         return ($username == 'admin');
     }
 
-    private function listTables() {
-        $tables = array();
-        $sql = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name";
-        $result = $this->db->query($sql);
-        if ($result) {
-            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                $tables[] = $row['name'];
-            }
-        }
-        return $tables;
-    }
-
     /**
      * @param Request $request
      * @param $args
@@ -66,7 +56,7 @@ class AdminController
         $args['tablename'] = isset($session['tablename']) ? $session['tablename'] : 'psa_demo';
         $args['menu'] = $request->getAttribute('menu');
         $args['version'] = $this->db->getAttribute(PDO::ATTR_SERVER_VERSION);
-        $args['tables'] = $this->listTables();
+        $args['tables'] = DataBaseProcessing::list($this->db);
         $args['errors'] = $this->flash->getMessage('errors');
         $args['inputs'] = $this->flash->getMessage('inputs');
         return $args;

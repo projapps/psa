@@ -61,7 +61,7 @@ class HomeController
                 $columns[] = array('db' => $field['name'], 'dt' => $counter);
                 $counter++;
             }
-            $result = DataBaseProcessing::check((object) $data, $this->db, 'psa_users', $columns);
+            $result = DataBaseProcessing::select((object) $data, $this->db, 'psa_users', $columns);
             if (count($result) > 0) {
                 $_SESSION['username'] = $result[0]['username'];
                 $_SESSION['tablename'] = $result[0]['tablename'];
@@ -77,18 +77,6 @@ class HomeController
     public function logout(Request $request, Response $response, $args) {
         session_unset();
         return $response->withHeader('Location', '/')->withStatus(302);
-    }
-
-    private function listTables() {
-        $tables = array();
-        $sql = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name";
-        $result = $this->db->query($sql);
-        if ($result) {
-            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                $tables[] = $row['name'];
-            }
-        }
-        return $tables;
     }
 
     private function fieldData($tablename) {
@@ -115,7 +103,7 @@ class HomeController
         $args['tablename'] = isset($session['tablename']) ? $session['tablename'] : 'psa_demo';
         $args['menu'] = $request->getAttribute('menu');
         $args['version'] = $this->db->getAttribute(PDO::ATTR_SERVER_VERSION);
-        $args['tables'] = $this->listTables();
+        $args['tables'] = DataBaseProcessing::list($this->db);
         $args['fields'] = $this->fieldData($args['tablename']);
         $args['errors'] = $this->flash->getMessage('errors');
         $args['inputs'] = $this->flash->getMessage('inputs');
