@@ -32,6 +32,7 @@ class AdminController
             $args['tablename'] = '';
             return $this->renderer->render($response, 'admin.phtml', $args);
         } else {
+            session_unset();
             $errors['login'] = "User is not allowed to add table.";
             $this->flash->addMessage('errors', $errors);
             return $response->withHeader('Location', '/')->withStatus(302);
@@ -45,7 +46,20 @@ class AdminController
             $args['nav']['about'] = '';
             return $this->renderer->render($response, 'admin.phtml', $args);
         } else {
+            session_unset();
             $errors['login'] = "User is not allowed to edit table.";
+            $this->flash->addMessage('errors', $errors);
+            return $response->withHeader('Location', '/')->withStatus(302);
+        }
+    }
+
+    public function add(Request $request, Response $response, $args) {
+        if ($this->isAuthorised($request)) {
+            $data = $request->getParsedBody();
+            var_dump($data);
+        } else {
+            session_unset();
+            $errors['login'] = "User is not allowed to create table.";
             $this->flash->addMessage('errors', $errors);
             return $response->withHeader('Location', '/')->withStatus(302);
         }

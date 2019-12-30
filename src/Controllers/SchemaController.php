@@ -15,10 +15,6 @@ class SchemaController
     }
 
     public function add(Request $request, Response $response, $args) {
-        if ($this->isAuthorised($request)) {
-            $data = $request->getParsedBody();
-            var_dump($data);
-        }
     }
 
     private function isAuthorised(Request $request) {
