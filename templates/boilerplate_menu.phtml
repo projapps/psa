@@ -36,7 +36,7 @@
                 <div class="form-group">
                     <label for="username"></label>
                     <input type="text" name="username" id="username" placeholder="Username"
-                           class="form-control <?=
+                           autocomplete="username" class="form-control <?=
                            (!empty($errors) && array_key_exists('username', $errors[0])) ? 'is-invalid' : '' ?>"
                            value="<?= empty($inputs) ? '' : $inputs[0]['username'] ?>" required>
                     <?php if (!empty($errors) && array_key_exists('username', $errors[0])): ?>
@@ -53,7 +53,7 @@
                 <div class="form-group">
                     <label for="password"></label>
                     <input type="password" name="password" id="password" placeholder="Password"
-                           class="form-control <?=
+                           autocomplete="current-password" class="form-control <?=
                            (!empty($errors) && array_key_exists('password', $errors[0])) ? 'is-invalid' : '' ?>"
                            value="<?= empty($inputs) ? '' : $inputs[0]['password'] ?>" required>
                     <?php if (!empty($errors) && array_key_exists('password', $errors[0])): ?>

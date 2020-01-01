@@ -62,8 +62,12 @@ class DataBaseProcessing
         return $stmt->fetchAll();
     }
 
-    static function create ()
-    {}
+    static function create ( $data, PDO $db, $table, $columns )
+    {
+        $sql = "";
+        $stmt = $db->prepare($sql);
+        return $stmt->execute();
+    }
 
     static function alter ()
     {}

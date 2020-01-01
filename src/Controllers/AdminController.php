@@ -56,7 +56,13 @@ class AdminController
     public function add(Request $request, Response $response, $args) {
         if ($this->isAuthorised($request)) {
             $data = $request->getParsedBody();
-            var_dump($data);
+            $tablename = $data['tablename'];
+            $tablefields = json_decode($data['tablefields']);
+            if (DataBaseProcessing::create($data, $this->db, $tablename, $tablefields)) {
+                return $response->withHeader('Location', '/admin/open/' . $tablename)->withStatus(302);
+            } else {
+                return $response->withHeader('Location', '/admin/add')->withStatus(302);
+            }
         } else {
             session_unset();
             $errors['login'] = "User is not allowed to create table.";

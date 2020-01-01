@@ -52,7 +52,7 @@
 </div>
 <?php include __DIR__ . '/boilerplate_body.phtml'; ?>
 <script type="text/javascript">
-    var fieldtypesOptions = 
+    var fieldtypesOptions =
         { 
             "TEXT" : "TEXT", 
             "NUMERIC" : "NUMERIC", 
@@ -74,12 +74,7 @@
                 data: "fieldtype", 
                 title: "Field Type", 
                 type : "select", 
-                options: fieldtypesOptions, 
-                select2 : { width: "100%"}, 
-                render: function (data, type, row, meta) {
-                    if (data == null || !(data in fieldtypesOptions)) return null;
-                    return fieldtypesOptions[data];
-                }
+                options: fieldtypesOptions
             }
         ];
         let oTable = $('#example').DataTable({
@@ -108,7 +103,6 @@
                     name: 'refresh'     // do not change name
                 }
             ],
-            "sPaginationType": "full_numbers",
             <?php if ($tablename == ''): ?>
             <?php else: ?>
             "ajax": {
@@ -116,11 +110,16 @@
                 "type": "GET"
             },
             <?php endif; ?>
+            "sPaginationType": "full_numbers"
         });
+        <?php if ($tablename == ''): ?>
         $('#formAddTable').submit(function(event) {
-            var aData = oTable.fnGetData();
+            var aData = JSON.stringify(oTable.data().toArray());
+            console.log(aData);
             $('input[name=tablefields]').val(aData);
+            // event.preventDefault();
         });
+        <?php endif; ?>
     });
 </script>
 </body>
