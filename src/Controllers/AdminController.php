@@ -44,6 +44,7 @@ class AdminController
             $args = $this->setArgs($request, $args);
             $args['nav']['home'] = '';
             $args['nav']['about'] = '';
+            $args['tablename'] = $args['table'];
             return $this->renderer->render($response, 'admin.phtml', $args);
         } else {
             session_unset();

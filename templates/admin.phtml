@@ -106,7 +106,7 @@
             <?php if ($tablename == ''): ?>
             <?php else: ?>
             "ajax": {
-                "url": "<?=$menu['list_schema']?>",
+                "url": "<?=$menu['list_schema']?><?=$tablename?>",
                 "type": "GET"
             },
             <?php endif; ?>

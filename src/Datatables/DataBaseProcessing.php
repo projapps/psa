@@ -64,7 +64,17 @@ class DataBaseProcessing
 
     static function create ( $data, PDO $db, $table, $columns )
     {
-        $sql = "";
+        $sql = "CREATE TABLE " . $table . " ( ";
+        $comma = false;
+        foreach ($columns as $column) {
+            if ($comma) {
+                $sql .= ", " . $column->fieldname . " " . $column->fieldtype;
+            } else {
+                $sql .= $column->fieldname . " " . $column->fieldtype;
+                $comma = true;
+            }
+        }
+        $sql .= " )";
         $stmt = $db->prepare($sql);
         return $stmt->execute();
     }
