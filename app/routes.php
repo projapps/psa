@@ -55,7 +55,7 @@ return function (App $app) {
         $group->get('/new', AdminController::class . ':new')->setName('add_admin');
         $group->get('/open/[{table}]', AdminController::class . ':open')->setName('edit_admin');
         $group->post('/add', AdminController::class . ':add')->setName('add_table');
-        $group->delete('/remove/[{table}]', AdminController::class . ':remove')->setName('remove_table');
+        $group->any('/remove/[{table}]', AdminController::class . ':remove')->setName('remove_table');
     })->add($mw);
 
     $app->group('/schema', function (Group $group) {

@@ -62,11 +62,28 @@ class AdminController
             if (DataBaseProcessing::create($data, $this->db, $tablename, $tablefields)) {
                 return $response->withHeader('Location', '/admin/open/' . $tablename)->withStatus(302);
             } else {
-                return $response->withHeader('Location', '/admin/add')->withStatus(302);
+                return $response->withHeader('Location', '/admin/new')->withStatus(302);
             }
         } else {
             session_unset();
             $errors['login'] = "User is not allowed to create table.";
+            $this->flash->addMessage('errors', $errors);
+            return $response->withHeader('Location', '/')->withStatus(302);
+        }
+    }
+
+    public function remove(Request $request, Response $response, $args) {
+        if ($this->isAuthorised($request)) {
+            $data = $request->getParsedBody();
+            $tablename = $args['table'];
+            if (DataBaseProcessing::drop($data, $this->db, $tablename)) {
+                return $response->withHeader('Location', '/admin/new')->withStatus(302);
+            } else {
+                return $response->withHeader('Location', '/admin/open/' . $tablename)->withStatus(302);
+            }
+        } else {
+            session_unset();
+            $errors['login'] = "User is not allowed to drop table.";
             $this->flash->addMessage('errors', $errors);
             return $response->withHeader('Location', '/')->withStatus(302);
         }

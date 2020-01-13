@@ -82,8 +82,12 @@ class DataBaseProcessing
     static function alter ()
     {}
 
-    static function drop ()
-    {}
+    static function drop ( $data, PDO $db, $table )
+    {
+        $sql = "DROP TABLE " . $table;
+        $stmt = $db->prepare($sql);
+        return $stmt->execute();
+    }
 
     static function list (PDO $db)
     {
