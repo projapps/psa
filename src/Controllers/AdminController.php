@@ -60,8 +60,12 @@ class AdminController
             $tablename = $data['tablename'];
             $tablefields = json_decode($data['tablefields']);
             if (DataBaseProcessing::create($data, $this->db, $tablename, $tablefields)) {
+                $errors['success'] = "Table `" . $tablename . "` is created.";
+                $this->flash->addMessage('errors', $errors);
                 return $response->withHeader('Location', '/admin/open/' . $tablename)->withStatus(302);
             } else {
+                $errors['failure'] = "Table `" . $tablename . "` cannot be created.";
+                $this->flash->addMessage('errors', $errors);
                 return $response->withHeader('Location', '/admin/new')->withStatus(302);
             }
         } else {
@@ -77,8 +81,12 @@ class AdminController
             $data = $request->getParsedBody();
             $tablename = $args['table'];
             if (DataBaseProcessing::drop($data, $this->db, $tablename)) {
+                $errors['success'] = "Table `" . $tablename . "` is dropped.";
+                $this->flash->addMessage('errors', $errors);
                 return $response->withHeader('Location', '/admin/new')->withStatus(302);
             } else {
+                $errors['failure'] = "Table `" . $tablename . "` cannot be dropped.";
+                $this->flash->addMessage('errors', $errors);
                 return $response->withHeader('Location', '/admin/open/' . $tablename)->withStatus(302);
             }
         } else {

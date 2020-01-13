@@ -9,6 +9,17 @@
     <div class="row">
         <?php include __DIR__ . '/boilerplate_side.phtml'; ?>
         <div class="col-sm-8">
+            <?php if (!empty($errors)): ?>
+                <?php if (array_key_exists('success', $errors[0])): ?>
+                <div class="alert alert-success" role="alert">
+                    <b>Success :</b> <?= $errors[0]['success'] ?>
+                </div>
+                <?php elseif (array_key_exists('failure', $errors[0])): ?>
+                <div class="alert alert-danger" role="alert">
+                    <b>Failure :</b> <?= $errors[0]['failure'] ?>
+                </div>
+                <?php endif; ?>
+            <?php endif; ?>
             <?php if ($tablename == ''): ?>
                 <h3>Add New Table</h3>
                 <br>
