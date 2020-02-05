@@ -32,7 +32,30 @@ class SchemaController
     }
 
     public function add(Request $request, Response $response, $args) {
+        if ($this->isAuthorised($request)) {
+            $data = json_decode($request->getBody());
+            if (DataBaseProcessing::alter($data, $this->db, $args['table'], "ADD")) {
+                $result['fieldname'] = $data->fieldname;
+                $result['fieldtype'] = $data->fieldtype;
+                $payload = json_encode($result);
+            } else {
+                $response = $response->withStatus(500);
+                $payload = $this->getErrorsPayload('Internal Server Error', "Unable to add column to schema.");
+            }
+        } else {
+            $response = $response->withStatus(401);
+            $payload = $this->getErrorsPayload('Unauthorized', "User is not allowed to add to schema.");
+        }
+        $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    private function getErrorsPayload($error_type, $error_message) {
+        $errors = array();
+        $errors[$error_type][0] = $error_message;
+        $responseJson = array();
+        $responseJson['errors'] = $errors;
+        return json_encode($responseJson);
     }
 
     private function isAuthorised(Request $request) {

@@ -120,8 +120,20 @@
                 "url": "<?=$menu['list_schema']?><?=$tablename?>",
                 "type": "GET"
             },
+            "onAddRow": function(datatable, rowdata, success, error) {
+                console.log(rowdata);
+                $.ajax({
+                    "url": "<?=$menu['add_schema']?><?=$tablename?>",
+                    "type": "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(rowdata),
+                    success: success,
+                    error: error
+                });
+            },
             <?php endif; ?>
-            "sPaginationType": "full_numbers"
+            "sPaginationType": "full_numbers",
+            "order": []
         });
         <?php if ($tablename == ''): ?>
         $('#formAddTable').submit(function(event) {

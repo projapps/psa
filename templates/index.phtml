@@ -60,7 +60,6 @@
                 "type": "GET"
             },
             "onAddRow": function(datatable, rowdata, success, error) {
-                console.log(rowdata);
                 $.ajax({
                     "url": "<?=$menu['add_data']?>",
                     "type": "POST",

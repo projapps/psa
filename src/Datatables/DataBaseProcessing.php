@@ -79,8 +79,15 @@ class DataBaseProcessing
         return $stmt->execute();
     }
 
-    static function alter ()
-    {}
+    static function alter ( $data, PDO $db, $table, $action )
+    {
+        if ($action == "ADD") {
+            $sql = "ALTER TABLE " . $table . " ADD " . $data->fieldname . " " . $data->fieldtype;
+            $stmt = $db->prepare($sql);
+            return $stmt->execute();
+        }
+        return false;
+    }
 
     static function drop ( $data, PDO $db, $table )
     {
