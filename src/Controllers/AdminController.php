@@ -59,7 +59,7 @@ class AdminController
             $data = $request->getParsedBody();
             $tablename = $data['tablename'];
             $tablefields = json_decode($data['tablefields']);
-            if (DataBaseProcessing::create($data, $this->db, $tablename, $tablefields)) {
+            if (DataBaseProcessing::create($this->db, $tablename, $tablefields)) {
                 $errors['success'] = "Table `" . $tablename . "` is created.";
                 $this->flash->addMessage('errors', $errors);
                 return $response->withHeader('Location', '/admin/open/' . $tablename)->withStatus(302);
@@ -80,7 +80,7 @@ class AdminController
         if ($this->isAuthorised($request)) {
             $data = $request->getParsedBody();
             $tablename = $args['table'];
-            if (DataBaseProcessing::drop($data, $this->db, $tablename)) {
+            if (DataBaseProcessing::drop($this->db, $tablename)) {
                 $errors['success'] = "Table `" . $tablename . "` is dropped.";
                 $this->flash->addMessage('errors', $errors);
                 return $response->withHeader('Location', '/admin/new')->withStatus(302);

@@ -121,10 +121,20 @@
                 "type": "GET"
             },
             "onAddRow": function(datatable, rowdata, success, error) {
-                console.log(rowdata);
                 $.ajax({
                     "url": "<?=$menu['add_schema']?><?=$tablename?>",
                     "type": "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(rowdata),
+                    success: success,
+                    error: error
+                });
+            },
+            "onDeleteRow": function(datatable, rowdata, success, error) {
+                console.log(rowdata);
+                $.ajax({
+                    "url": "<?=$menu['remove_schema']?><?=$tablename?>",
+                    "type": "DELETE",
                     contentType: "application/json",
                     data: JSON.stringify(rowdata),
                     success: success,

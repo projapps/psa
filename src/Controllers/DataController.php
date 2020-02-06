@@ -112,18 +112,11 @@ class DataController
 
     private function getColumns($table, $primaryKey = null) {
         $columns = array();
-        $fields = array();
-        $sql = "PRAGMA table_info(" . $table . ");";
-        $result = $this->db->query($sql);
-        if ($result) {
-            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                $fields[] = $row;
-            }
-        }
+        $fields = DataBaseProcessing::getFields($this->db, $table);
         $counter = 0;
         foreach ($fields as $field) {
-            if ($primaryKey != null && $field['name'] == $primaryKey) continue;
-            $columns[] = array('db' => $field['name'], 'dt' => $counter);
+            if ($primaryKey != null && $field->fieldname == $primaryKey) continue;
+            $columns[] = array('db' => $field->fieldname, 'dt' => $counter);
             $counter++;
         }
         return $columns;

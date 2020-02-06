@@ -19,7 +19,7 @@ class SchemaController
     }
 
     public function get(Request $request, Response $response, $args) {
-        $columns = $this->getFields($args['table']);
+        $columns = DataBaseProcessing::getFields($this->db, $args['table']);
         $body = $request->getParsedBody();
         $payload = json_encode(array(
             "draw"            => isset ( $body['draw'] ) ? intval( $body['draw'] ) : 0,
@@ -50,6 +50,25 @@ class SchemaController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
+    public function remove(Request $request, Response $response, $args) {
+        if ($this->isAuthorised($request)) {
+            $data = json_decode($request->getBody());
+            if (DataBaseProcessing::alter($data, $this->db, $args['table'], "DROP")) {
+                $result['fieldname'] = $data->fieldname;
+                $result['fieldtype'] = $data->fieldtype;
+                $payload = json_encode($result);
+            } else {
+                $response = $response->withStatus(500);
+                $payload = $this->getErrorsPayload('Internal Server Error', "Unable to remove column from schema.");
+            }
+        } else {
+            $response = $response->withStatus(401);
+            $payload = $this->getErrorsPayload('Unauthorized', "User is not allowed to remove from schema.");
+        }
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
     private function getErrorsPayload($error_type, $error_message) {
         $errors = array();
         $errors[$error_type][0] = $error_message;
@@ -62,20 +81,5 @@ class SchemaController
         $session = $request->getAttribute('session');
         $username = isset($session['username']) ? $session['username'] : '';
         return ($username == 'admin');
-    }
-
-    private function getFields($table, $primaryKey = null) {
-        $fields = array();
-        $sql = "PRAGMA table_info(" . $table . ");";
-        $result = $this->db->query($sql);
-        if ($result) {
-            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                $class = new \stdClass();
-                $class->fieldname = $row["name"]; 
-                $class->fieldtype = $row["type"];
-                $fields[] = $class;
-            }
-        }
-        return $fields;
     }
 }

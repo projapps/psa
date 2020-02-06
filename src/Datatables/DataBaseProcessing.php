@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Datatables;
 
 use PDO;
@@ -6,16 +7,15 @@ use PDOException;
 
 class DataBaseProcessing
 {
-    static function insert ( $data, PDO $db, $table, $columns )
+    static function insert($data, PDO $db, $table, $columns)
     {
         $pluck = ServerSideProcessing::pluck($columns, 'db');
-        $sql = "INSERT INTO " . $table . "(" . implode(", ", $pluck) .
-            ") VALUES(:" . implode(", :", $pluck) . ")";
+        $sql = "INSERT INTO " . $table . "(" . implode(", ", $pluck) . ") VALUES(:" . implode(", :", $pluck) . ")";
         $stmt = self::bindValues($data, $db, $columns, $sql);
         return $stmt->execute();
     }
 
-    static function update ( $data, PDO $db, $table, $columns )
+    static function update($data, PDO $db, $table, $columns)
     {
         $sql = "UPDATE " . $table;
         $comma = false;
@@ -35,7 +35,7 @@ class DataBaseProcessing
         return $stmt->execute();
     }
 
-    static function delete ( $data, PDO $db, $table )
+    static function delete($data, PDO $db, $table)
     {
         $key = "id";
         $sql = "DELETE FROM " . $table . " WHERE " . $key . " = :" . $key;
@@ -44,7 +44,7 @@ class DataBaseProcessing
         return $stmt->execute();
     }
 
-    static function select ( $data, PDO $db, $table, $columns )
+    static function select($data, PDO $db, $table, $columns)
     {
         $pluck = ServerSideProcessing::pluck($columns, 'db');
         $sql = "SELECT " . implode(", ", $pluck) . " FROM " . $table;
@@ -62,7 +62,7 @@ class DataBaseProcessing
         return $stmt->fetchAll();
     }
 
-    static function create ( $data, PDO $db, $table, $columns )
+    static function create(PDO $db, $table, $columns)
     {
         $sql = "CREATE TABLE " . $table . " ( ";
         $comma = false;
@@ -79,24 +79,49 @@ class DataBaseProcessing
         return $stmt->execute();
     }
 
-    static function alter ( $data, PDO $db, $table, $action )
+    static function alter($data, PDO $db, $table, $action)
     {
         if ($action == "ADD") {
             $sql = "ALTER TABLE " . $table . " ADD " . $data->fieldname . " " . $data->fieldtype;
             $stmt = $db->prepare($sql);
             return $stmt->execute();
+        } elseif ($action == "MODIFY") {
+            $db->beginTransaction();
+            $db->rollBack();
+        } elseif ($action == "DROP") {
+            try {
+                $db->beginTransaction();
+                $sql = "ALTER TABLE " . $table . " RENAME TO _" . $table . "_old";
+                $stmt = $db->prepare($sql);
+                $stmt->execute();
+
+                $fields = self::getFields($db, $table);
+                $columns = array();
+                $col_names = array();
+                foreach ($fields as $field) {
+                    if ($field->fieldname == $data->fieldname) continue;
+                    $columns[] = $field;
+                    $col_names[] = $field->fieldname;
+                }
+                
+                self::create($db, $table, $columns);
+                self::insertFromTable($db, $col_names, $table, "_" . $table . "_old");
+                return $db->commit();
+            } catch (PDOException $e) {
+                $db->rollBack();
+            }
         }
         return false;
     }
 
-    static function drop ( $data, PDO $db, $table )
+    static function drop(PDO $db, $table)
     {
         $sql = "DROP TABLE " . $table;
         $stmt = $db->prepare($sql);
         return $stmt->execute();
     }
 
-    static function list (PDO $db)
+    static function list(PDO $db)
     {
         $tables = array();
         $sql = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name";
@@ -107,6 +132,22 @@ class DataBaseProcessing
             }
         }
         return $tables;
+    }
+
+    static function getFields(PDO $db, $table)
+    {
+        $fields = array();
+        $sql = "PRAGMA table_info(" . $table . ");";
+        $result = $db->query($sql);
+        if ($result) {
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                $class = new \stdClass();
+                $class->fieldname = $row["name"];
+                $class->fieldtype = $row["type"];
+                $fields[] = $class;
+            }
+        }
+        return $fields;
     }
 
     /**
@@ -125,5 +166,13 @@ class DataBaseProcessing
                 $stmt->bindValue(':' . $key, $data->$key);
         }
         return $stmt;
+    }
+
+    private static function insertFromTable(PDO $db, $columns, $new_table, $old_table)
+    {
+        $sql = "INSERT INTO " . $new_table . "(" . implode(", ", $columns) . ") " .
+            "SELECT " . implode(", ", $columns) . " FROM " . $old_table;
+        $stmt = $db->prepare($sql);
+        return $stmt->execute();
     }
 }
