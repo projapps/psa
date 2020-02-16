@@ -4,6 +4,8 @@ namespace App\Datatables;
 
 use PDO;
 use PDOException;
+use PDOStatement;
+use stdClass;
 
 class DataBaseProcessing
 {
@@ -141,7 +143,7 @@ class DataBaseProcessing
         $result = $db->query($sql);
         if ($result) {
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                $class = new \stdClass();
+                $class = new stdClass();
                 $class->fieldname = $row["name"];
                 $class->fieldtype = $row["type"];
                 $fields[] = $class;
@@ -155,7 +157,7 @@ class DataBaseProcessing
      * @param PDO $db
      * @param $columns
      * @param string $sql
-     * @return bool|\PDOStatement
+     * @return bool|PDOStatement
      */
     private static function bindValues($data, PDO $db, $columns, string $sql)
     {

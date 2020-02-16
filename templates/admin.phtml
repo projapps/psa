@@ -130,8 +130,17 @@
                     error: error
                 });
             },
+            "onEditRow": function(datatable, rowdata, success, error) {
+                $.ajax({
+                    "url": "<?=$menu['edit_schema']?><?=$tablename?>",
+                    "type": "PUT",
+                    contentType: "application/json",
+                    data: JSON.stringify(rowdata),
+                    success: success,
+                    error: error
+                });
+            },
             "onDeleteRow": function(datatable, rowdata, success, error) {
-                console.log(rowdata);
                 $.ajax({
                     "url": "<?=$menu['remove_schema']?><?=$tablename?>",
                     "type": "DELETE",
