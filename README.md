@@ -38,9 +38,9 @@ Please refer to this [blog post](http://blog.projapps.com/?p=79) for updated inf
 ## Framework/Libraries used
 
 * [Slim Framework](https://www.slimframework.com/)
-* [DataTables](https://datatables.net/) and its [Editor](https://editor.datatables.net/)
+* [DataTables](https://datatables.net/) and ~~its Editor~~ the [AltEditor](https://github.com/KasperOlesen/DataTable-AltEditor)
 * PDO SQLite3 Driver
-* [jQuery](http://jquery.com/) and [jQuery User Interface](http://jqueryui.com/)
+* [jQuery](https://jquery.com/) and [Bootstrap](https://getbootstrap.com/)
 
 ## Functionality
 
